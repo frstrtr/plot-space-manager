@@ -4,14 +4,15 @@ import binpacking
 
 if __name__ == '__main__':
 
-    two_drives = simulation.rack_config(1, 1)
+    two_drives = simulation.rack_config(12, 7)
     # proc = KnapsackGreedy.FractionalKnapsack()
     drives = (two_drives.values())  # list of file dict per drive
     weight_list = list()
     for drive in drives:
         weight_list.extend(list(drive.values()))
+        print('Drive: ', sum(list(drive.values())))
     volume_list = weight_list
-    max_weight = 17927473950720
+    max_weight = 36000000000000
     # RAID32     35 856 004 677 632
     #               213 724 000 000
     # SAAT18     17 927 473 950 720
@@ -21,4 +22,13 @@ if __name__ == '__main__':
     # result = KnapSackDP_Printing.printknapSack(
     #     weight_list, volume_list, max_weight, number_of_items)
     # print("Max Value:\t", result)
-    print("===== list\n", volume_list, "\n", result)
+
+    # print("===== list\n", volume_list, "\n")
+    disk = int()
+
+    for i in result:
+        disk += 1
+        print(i)
+        print('Disk ', disk)
+        print('Number of plots: ', len(disk))
+        print('Total disk space taken: ', sum(i), '\n\n\n')
