@@ -32,29 +32,35 @@ class FractionalKnapsack(object):
             if (packs[i].weight <= remain):
                 remain -= packs[i].weight
                 result += packs[i].value
-                print(packs[i].weight)
+                # print(packs[i].weight)
 
-            # print("Pack ", i, " - Weight ",
-            #       packs[i].weight, " - Value ", packs[i].value)
+            print("Pack ", i, " - Weight ",
+                  packs[i].weight, " - Value ", packs[i].value)
 
             if (packs[i].weight > remain):
                 i += 1
 
             if (i == n):
                 stopProc = True
+        # print(packs)
         return result
 
 
 if __name__ == "__main__":
+
     # W stands for the weight of the item
-    weight_list = [1024, 2048, 3192, 4096]
+    weight_list = [102400000000, 204800000000, 319200000000, 409600000000]
+
     # V stands for Value of the item
     # THE BIGGER THE PLOT THE BIGGER THE VALUE
     volume_list = weight_list  # [1, 2, 3, 4]
+
     # M stands for KnapSack MAX Volume
     max_weight = 36000348766208
+
     # N stands for a number of items,
     number_of_items = len(weight_list)
+
     # C stands for Cost of the item.
 
     proc = FractionalKnapsack()

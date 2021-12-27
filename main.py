@@ -1,5 +1,5 @@
 import simulation
-import KnapSackDP_Printing
+import binpacking
 
 
 if __name__ == '__main__':
@@ -16,6 +16,9 @@ if __name__ == '__main__':
     #               213 724 000 000
     # SAAT18     17 927 473 950 720
     number_of_items = len(weight_list)
-    result = KnapSackDP_Printing.printknapSack(
-        weight_list, volume_list, max_weight, number_of_items)
-    print("Max Value:\t", result)
+    result = binpacking.to_constant_volume(volume_list, max_weight)
+
+    # result = KnapSackDP_Printing.printknapSack(
+    #     weight_list, volume_list, max_weight, number_of_items)
+    # print("Max Value:\t", result)
+    print("===== list\n", volume_list, "\n", result)
