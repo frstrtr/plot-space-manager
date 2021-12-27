@@ -1,4 +1,4 @@
-if __name__ = '__main__':
+if __name__ == '__main__':
 
     def knapSack(maxW, wt, val, n):
         # initial conditions to break recursion

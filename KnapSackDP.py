@@ -1,4 +1,4 @@
-if __name__ = '__main__':
+if __name__ == '__main__':
 
     def knapSack(maxW, wt, val, n):
         K = [[0 for _ in range(maxW + 1)] for _ in range(n + 1)]
@@ -21,8 +21,8 @@ if __name__ = '__main__':
         return K[n][maxW]
 
     # Driver code
-    val = [1024, 2048, 3192, 4096]
-    wt = [1024, 2048, 3192, 4096]
-    W = 37000
+    val = [1024, 2048, 3192, 4096, 1022, 1000, 2000, 3000]
+    wt = [1024, 2048, 3192, 4096, 1022, 1000, 2000, 3000]
+    W = 17300
     n = len(val)
     print(knapSack(W, wt, val, n))

@@ -32,9 +32,10 @@ class FractionalKnapsack(object):
             if (packs[i].weight <= remain):
                 remain -= packs[i].weight
                 result += packs[i].value
+                print(packs[i].weight)
 
-            print("Pack ", i, " - Weight ",
-                  packs[i].weight, " - Value ", packs[i].value)
+            # print("Pack ", i, " - Weight ",
+            #       packs[i].weight, " - Value ", packs[i].value)
 
             if (packs[i].weight > remain):
                 i += 1
