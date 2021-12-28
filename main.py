@@ -12,13 +12,12 @@ if __name__ == '__main__':
         weight_list.extend(list(drive.values()))
         print('Drive: ', sum(list(drive.values())))
     volume_list = weight_list
-    max_weight = 36000000000000
+    max_weight = 18000000000000
     # RAID32     35 856 004 677 632
     #               213 724 000 000
     # SAAT18     17 927 473 950 720
     number_of_items = len(weight_list)
     result = binpacking.to_constant_volume(volume_list, max_weight)
-
     # result = KnapSackDP_Printing.printknapSack(
     #     weight_list, volume_list, max_weight, number_of_items)
     # print("Max Value:\t", result)
@@ -30,5 +29,5 @@ if __name__ == '__main__':
         disk += 1
         print(i)
         print('Disk ', disk)
-        print('Number of plots: ', len(disk))
+        print('Number of plots: ', len(i))
         print('Total disk space taken: ', sum(i), '\n\n\n')

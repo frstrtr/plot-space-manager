@@ -3,7 +3,7 @@ from datetime import datetime
 
 # plot size simulation
 ### K32 ###
-K32_UPPER = 108836951252
+K32_UPPER = 108836365547
 K32_LOWER = 108716934884
 # from 103 691 000 kBytes to 103 795 999 kBytes
 # k32 = random.randint(K32_UPPER, K32_LOWER)
