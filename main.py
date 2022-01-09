@@ -4,7 +4,7 @@ import binpacking
 
 if __name__ == '__main__':
 
-    two_drives = simulation.rack_config(12, 7)
+    two_drives = simulation.rack_config(12, 7) # 12 SATA18 and 7 RAID32
     # proc = KnapsackGreedy.FractionalKnapsack()
     drives = (two_drives.values())  # list of file dict per drive
     weight_list = list()
