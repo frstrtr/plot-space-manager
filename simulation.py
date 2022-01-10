@@ -2,6 +2,7 @@ import random
 from datetime import datetime
 
 # plot size simulation
+
 ### K32 ###
 K32_UPPER = 108836365547
 K32_LOWER = 108716934884
@@ -26,7 +27,7 @@ def time_stamp():
     now = datetime.now()
     return now.strftime("%Y-%m-%d-%H-%M-")
 
-### GENERATING PLOTS ###
+### GENERATING PLOT FILE NAMES ###
 
 
 def plot_the_drive(drive):
