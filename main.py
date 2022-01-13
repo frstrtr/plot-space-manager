@@ -1,8 +1,13 @@
 import simulation
-import binpacking
+# import binpacking
 
+SATA18_SIZE = 17927473950720
+RAID32_SIZE = 35856004677632
 
 def prnf(string_in):
+    """
+    Prints decimal with space separators between 1000'th group
+    """
     print(format(string_in, ',').replace(',', ' ').replace('.', ','))
     return 0
 
@@ -57,6 +62,9 @@ if __name__ == '__main__':
     drive_free_space = 1
     temp_plot_set = dict() # temporary storage for plots moved from drive
 
+    # split disk dict in to two dictioanry 
+    # with different plot sizes
+
     for disk_to_optimize in drives:  # Iterate over all disks in server
         while (drive_free_space > 0):
             # print (disk_to_optimize)
@@ -79,10 +87,10 @@ if __name__ == '__main__':
             drive_taken_space = sum(list(disk_to_optimize.values()))
             if len(disk_to_optimize) > 200:  # check number of plots on disk to determine disk size
                 # RAID32
-                drive_free_space = 35856004677632 - drive_taken_space
+                drive_free_space = RAID32_SIZE - drive_taken_space
             else:
                 # SATA18
-                drive_free_space = 17927473950720 - drive_taken_space
+                drive_free_space = SATA18_SIZE - drive_taken_space
 
             print('Drive free space: ',  format(drive_free_space,
                                                 ',').replace(',', ' ').replace('.', ','))
