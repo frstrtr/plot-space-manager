@@ -19,7 +19,7 @@ K33_LOWER = 224103462844
 def pseudo_hash():
     bits = random.getrandbits(256)
     bits_hex = hex(bits)
-    # Eliminate leading zeros by regenerating pseudo hash
+    # Eliminate leading zeros by regenerating pseudo hash with required length
     while len(bits_hex) < 66:
         bits = random.getrandbits(256)
         bits_hex = hex(bits)

@@ -27,6 +27,7 @@ class Plot():
     size = 1
 
     def __init__(self) -> None:
+        """ Init method for the class"""
         pass
 
 
@@ -150,7 +151,7 @@ if __name__ == '__main__':
             biggest_k32_plot_size_100Gb_on_the_server = max(
                 _ for _ in server_k32_plot_size_100_list if _ < PLOT_SIZE_THRESHOLD)
             # prnf('Biggest k32 plot size 100Gb on the SERVER: ',
-                #  biggest_k32_plot_size_100Gb_on_the_server)
+            #  biggest_k32_plot_size_100Gb_on_the_server)
 
             # Calcualate free space on the selected drive
             drive_taken_space = sum(list(disk_to_optimize.values()))
@@ -168,7 +169,7 @@ if __name__ == '__main__':
                     disk_to_optimize.__delitem__(plot_to_remove)
                     # remove found plot from list of 100Tb plots for this drive
                     # print(
-                        # 'Removing found plot from the list of 100Tb plots on this drive')
+                    # 'Removing found plot from the list of 100Tb plots on this drive')
                     plots_100tb.__delitem__(plot_to_remove)
                     # TODO: add removed plot to origin disk of the biggest plot?
 
@@ -181,32 +182,34 @@ if __name__ == '__main__':
                         if drive[k1] == biggest_k32_plot_size_100Gb_on_the_server:
                             biggest_plot_to_remove_name = k1
                             # print(
-                                # 'Biggest k32 plot on the SERVER to remove: ', k1)
+                            # 'Biggest k32 plot on the SERVER to remove: ', k1)
                             # remove found biggest plot from source drive
                             # print(
-                                # 'Removing found biggest plot from the source drive')
+                            # 'Removing found biggest plot from the source drive')
                             drive.__delitem__(k1)
-                            # add found biggest plot to the current drive
-                            # print(
-                                # 'Adding found biggest plot to the current drive')
-                            disk_to_optimize[k1] = biggest_k32_plot_size_100Gb_on_the_server
-                            # print(
-                                # 'Adding found biggest plot to the 100Tb list')
-                            plots_100tb[k1] = biggest_k32_plot_size_100Gb_on_the_server
+                            # Adding smallest plot from optimized drive
+                            drive[plot_to_remove] = smallest_plot
                             # remove found biggest plot from the 100Tb plots dict of SERVER
-                            # TODO: Eliminate second run over this part of code after first deletion
                             # print(
-                                # 'Removing found biggest k32 plot from the 100Tb plots dict of SERVER')
+                            # 'Removing found biggest k32 plot from the 100Tb plots dict of SERVER')
                             server_k32_plot_size_100_list.remove(
                                 biggest_k32_plot_size_100Gb_on_the_server)
+                            # TODO: update server drives list with new drive state!
+                            # add found biggest plot to the current drive
+                            # print(
+                            # 'Adding found biggest plot to the current drive')
+                            disk_to_optimize[k1] = biggest_k32_plot_size_100Gb_on_the_server
+                            # print(
+                            # 'Adding found biggest plot to the drive 100Tb list')
+                            plots_100tb[k1] = biggest_k32_plot_size_100Gb_on_the_server
 
                             # prnf('Before biggest plot added: ',
-                                #  sum(plots_100tb.values())+smallest_plot)
+                            #  sum(plots_100tb.values())+smallest_plot)
 
                             plots_100tb[k1] = biggest_k32_plot_size_100Gb_on_the_server
 
                             # prnf('After biggest plot added: ',
-                                #  sum(plots_100tb.values()))
+                            #  sum(plots_100tb.values()))
 
                             total_disk_space_taken = sum(
                                 plots_100tb.values())+sum(plots_200tb.values())
@@ -225,10 +228,7 @@ if __name__ == '__main__':
 
             # prnf('Drive free space: ', drive_free_space)
             # print('\n')
-        
-        with open(str(__)+'.txt','w') as f:
+
+        with open(str(__)+'.txt', 'w') as f:
             print(disk_to_optimize, file=f)
             print('Drive free space: ', drive_free_space, file=f)
-
-
-
