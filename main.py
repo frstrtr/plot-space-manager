@@ -31,12 +31,13 @@ class Plot():
         pass
 
 
-def prnf(title, value_to_dec_split):
+def prnf(title, value_to_dec_split, end_symbol='\n'):
     """
     Prints decimal with space separators between 1000'th group
     """
     print(title, end='')
-    print(format(value_to_dec_split, ',').replace(',', ' ').replace('.', ','))
+    print(format(value_to_dec_split, ',').replace(
+        ',', ' ').replace('.', ','), end=end_symbol)
     return 0
 
 
@@ -103,6 +104,10 @@ if __name__ == '__main__':
         # remove current drive from unoptimized drives list
         server_drives_list_left.remove(disk_to_optimize)
 
+        # left last drive intact since there is no source of bigger plots left
+        if len(server_drives_list_left) == 0:
+            break
+
         # Create list of all plots left on unoptimized drives
         server_all_plots_left_size_list = update_whole_plots_set(
             server_drives_list_left)
@@ -117,7 +122,7 @@ if __name__ == '__main__':
                 server_k32_plot_size_100_list.append(plot_size_to_split)
         __ += 1
         # Drive number
-        print('Drive Bay:   ', __)
+        print('\n\n\nDrive Bay:   ', __, '\n')
 
         # split disk dict in to two dictioanry
         # with different plot sizes
@@ -134,46 +139,40 @@ if __name__ == '__main__':
         print('K32 (100Tb) plots: ', len(plots_100tb))
         print('K33 (200Tb) plots: ', len(plots_200tb), '\n')
         prnf('Used drive space: ', sum(disk_to_optimize.values()))
-        prnf('Drive free space:      ', drive_free_space)
+        prnf('Drive free space:     ', drive_free_space)
         print('\n')
 
         biggest_k32_plot_size_100Gb_on_the_server = 1
-        smallest_plot = 0
+        smallest_plot_on_the_drive_to_optimize = 0
         # optimizing 100Gb plots allocation
-        while ((drive_free_space > 0) and (biggest_k32_plot_size_100Gb_on_the_server > smallest_plot)):
+        while ((drive_free_space > biggest_k32_plot_size_100Gb_on_the_server-smallest_plot_on_the_drive_to_optimize) and (biggest_k32_plot_size_100Gb_on_the_server > smallest_plot_on_the_drive_to_optimize)):
             # print (disk_to_optimize)
 
             # Smallest plot
-            smallest_plot = min(_ for _ in list(plots_100tb.values()))
+            smallest_plot_on_the_drive_to_optimize = min(
+                _ for _ in list(plots_100tb.values()))
             # prnf('Smallest k32 plot on the DRIVE:            ', smallest_plot)
 
             # TODO: remove 200Gb check
             biggest_k32_plot_size_100Gb_on_the_server = max(
                 _ for _ in server_k32_plot_size_100_list if _ < PLOT_SIZE_THRESHOLD)
-            # prnf('Biggest k32 plot size 100Gb on the SERVER: ',
-            #  biggest_k32_plot_size_100Gb_on_the_server)
 
-            # Calcualate free space on the selected drive
-            drive_taken_space = sum(list(disk_to_optimize.values()))
-            # prnf('Drive space taken:                      ', drive_taken_space)
-
-            # Calculate drive free space depanding on its size
-            drive_free_space = check_drive_free_space(disk_to_optimize)
+            # eliminate last while loop iteration
+            if biggest_k32_plot_size_100Gb_on_the_server <= smallest_plot_on_the_drive_to_optimize:
+                break
 
             # Remove smallest plot
             # From disk to optimize
             # From 100Tb plots list
             for plot_to_remove in disk_to_optimize.keys():
-                if disk_to_optimize[plot_to_remove] == smallest_plot:
+                if disk_to_optimize[plot_to_remove] == smallest_plot_on_the_drive_to_optimize:
                     # prnf('Removing smallest plot from the DRIVE: ', smallest_plot)
                     disk_to_optimize.__delitem__(plot_to_remove)
                     # remove found plot from list of 100Tb plots for this drive
                     # print(
                     # 'Removing found plot from the list of 100Tb plots on this drive')
                     plots_100tb.__delitem__(plot_to_remove)
-                    # TODO: add removed plot to origin disk of the biggest plot?
 
-                    # remove biggest 100Tb plot from all_drives_list
                     # print('Removing biggest 100Tb plot from SERVER list...')
                     break
             for drive in server_drives_list_left:
@@ -182,20 +181,16 @@ if __name__ == '__main__':
                         if drive[k1] == biggest_k32_plot_size_100Gb_on_the_server:
                             biggest_plot_to_remove_name = k1
                             # print(
-                            # 'Biggest k32 plot on the SERVER to remove: ', k1)
-                            # remove found biggest plot from source drive
-                            # print(
                             # 'Removing found biggest plot from the source drive')
                             drive.__delitem__(k1)
                             # Adding smallest plot from optimized drive
-                            drive[plot_to_remove] = smallest_plot
-                            # remove found biggest plot from the 100Tb plots dict of SERVER
+                            drive[plot_to_remove] = smallest_plot_on_the_drive_to_optimize
+                            # Adding smallest plot to server's 100Tb plots list
+                            # server_k32_plot_size_100_list.append(smallest_plot_on_the_drive_to_optimize)
                             # print(
                             # 'Removing found biggest k32 plot from the 100Tb plots dict of SERVER')
                             server_k32_plot_size_100_list.remove(
                                 biggest_k32_plot_size_100Gb_on_the_server)
-                            # TODO: update server drives list with new drive state!
-                            # add found biggest plot to the current drive
                             # print(
                             # 'Adding found biggest plot to the current drive')
                             disk_to_optimize[k1] = biggest_k32_plot_size_100Gb_on_the_server
@@ -203,32 +198,29 @@ if __name__ == '__main__':
                             # 'Adding found biggest plot to the drive 100Tb list')
                             plots_100tb[k1] = biggest_k32_plot_size_100Gb_on_the_server
 
-                            # prnf('Before biggest plot added: ',
-                            #  sum(plots_100tb.values())+smallest_plot)
+                            # total_disk_space_taken = sum(
+                            #     plots_100tb.values())+sum(plots_200tb.values())
 
-                            plots_100tb[k1] = biggest_k32_plot_size_100Gb_on_the_server
-
-                            # prnf('After biggest plot added: ',
-                            #  sum(plots_100tb.values()))
-
-                            total_disk_space_taken = sum(
-                                plots_100tb.values())+sum(plots_200tb.values())
+                            drive_free_space = check_drive_free_space(
+                                disk_to_optimize)
                             prnf(
-                                'Total disk space taken after plot replacement: ', total_disk_space_taken)
+                                'Drive free space left: ', drive_free_space, '\r')
                             # TODO: update whole_set_of_plots
                             # print('Updating all plots list')
                             server_all_plots_left_size_list = update_whole_plots_set(
                                 server_drives_list_left)
 
                             break  # TODO check if plots with same size persists on the other drives
-                    drive_free_space = check_drive_free_space(
-                        disk_to_optimize)
 
                     break
-
-            # prnf('Drive free space: ', drive_free_space)
-            # print('\n')
 
         with open(str(__)+'.txt', 'w') as f:
             print(disk_to_optimize, file=f)
             print('Drive free space: ', drive_free_space, file=f)
+
+    with open(str(__+1)+'.txt', 'w') as f:
+        print('\n\n\nDrive bay: ', __+1)
+        print(disk_to_optimize, file=f)
+        drive_free_space = check_drive_free_space(server_drives_list[-1])
+        print('Drive free space: ', drive_free_space, file=f)
+        prnf('Drive free space: ', drive_free_space)
